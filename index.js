@@ -1,7 +1,7 @@
 "use strict";
 
 require("rootpath")();
-var cloneDeep = require("lodash.cloneDeep");
+var cloneDeep = require("lodash.clonedeep");
 var get = require("lodash.get");
 var merge = require("lodash.merge");
 var proxy = require("http-proxy").createProxyServer({});
