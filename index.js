@@ -6,8 +6,18 @@ var get = require("lodash.get");
 var merge = require("lodash.merge");
 var proxy = require("http-proxy").createProxyServer({});
 
+// Default proxy fallback
+var fallback = function fallback(target) {
+    return function(err, req, res) {
+        return res.status(500).json({
+            err: "Error while proxing to " + target
+        });
+    };
+};
+
+// Generate final config based on received config
 var generateConfig = function generateConfig(config) {
-	var suffix = config.suffix || "/proxy";
+	var prefix = config.prefix || "/proxy";
 
 	return {
 		target: config.target,
@@ -23,15 +33,15 @@ var generateConfig = function generateConfig(config) {
 		routes: [
 			{
 				target: "",
-				route: suffix
+				route: prefix
 			},
 			{
 				target: "files/",
 				route: [
 					"/files",
 					"/file",
-					"/" + suffix + "/files",
-					"/" + suffix +"/file",
+					prefix + "/files",
+					prefix + "/file",
 					"/api/1.0.0/files",
 					"/api/1.0.0/file"
 				]
@@ -40,27 +50,17 @@ var generateConfig = function generateConfig(config) {
 	};
 };
 
-var checkConfig = function checkConfig(config) {
-	return config && config.target instanceof String;
-};
-
-var fallback = function fallback(target) {
-    return function(err, req, res) {
-        return res.status(500).json({
-            err: "Error while proxing to " + target
-        });
-    };
-};
-
-var convertParams = function convertParams(app, target, apikey, tenant, host, suffix) {
-     return {
-        target: target,
+// Convert function params to generalized config
+var convertParams = function convertParams(app, target, apikey, tenant, host) {
+	return {
+		target: target,
 		host: host,
 		apikey: apikey,
 		tenant: tenant
-    };
+	};
 };
 
+// Proxy functionality
 var proxyMiddleware = function(config, route) {
 	config.target += get(route, "target", "");
 	delete config.routes;
@@ -70,25 +70,23 @@ var proxyMiddleware = function(config, route) {
 	};
 };
 
+// WCM proxy handler
 var main = function main(app, params) {
-	var c;
+	// Get function arguments
 	var args = [].slice.call(arguments);
-
-    if (args.length >= 4) {
-        c = convertParams.apply(args[0], args);
-    } else {
-		c = params;
-	}
-
+	// Convert params to params object if there are more then 2
+	var c = args.length > 2 ? convertParams.apply(args[0], args) : params;
+	// Generate final config
 	var config = generateConfig(c);
 
+	// Setup proxy for every default WCM route.
 	for (var i = 0; i < config.routes.length; i++) {
 		app.use(config.routes[i].route, proxyMiddleware(cloneDeep(config), config.routes[i]));
 	}
 };
 
 main.addProxyRoute = function(app, routes, proxyConfig) {
-	app.use(routes, proxyMiddleware(cloneDeep(generateConfig(proxyConfig))));
+	app.use(routes, proxyMiddleware(generateConfig(proxyConfig)));
 };
 
 module.exports = main;
