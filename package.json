@@ -1,0 +1,20 @@
+{
+  "name": "wcm-proxy-helper",
+  "version": "0.0.1",
+  "description": "Proxy helper for WCM node server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "WCM",
+    "Pelorus",
+    "Proxy"
+  ],
+  "author": "Jeroen Valcke (District01)",
+  "license": "ISC",
+  "dependencies": {
+    "http-proxy": "~1.16.2",
+    "rootpath": "~0.1.2"
+  }
+}
