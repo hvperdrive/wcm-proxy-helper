@@ -12,7 +12,7 @@ module.exports = function(app) {
     ProxyHelper(app, {
         target: "https://target...",
         apikey: "WCM apikey",
-        tenant: "WCM tenant name,
+        tenant: "WCM tenant name",
         host: "Server host name (needed for http <=> https proxy)",
         prefix: "/route"
     });
@@ -34,10 +34,10 @@ module.exports = function(app) {
 
 | Option | Default | Required | Description |
 |--------|---------|----------|-------------|
-| target | undefined | true | Target to proxy to. |
+| target | undefined | true | Target to proxy to |
 | apikey | undefined | false | WCM apikey |
 | tenant | undefined | false | WCM tenant |
-| host | undefined | false | Server host. (This needs to be set, when setting up a proxy from http to https) |
+| host | undefined | false | Server host domain (This needs to be set, when setting up a proxy from http to https) |
 | prefix | "/proxy" | false | Route after which should be proxied |
 | headers | undefined | false | Addtional headers |
 
@@ -50,5 +50,5 @@ module.exports = function(app) {
 | Option | Default | Required | Description |
 |--------|---------|----------|-------------|
 | tenant | undefined | false | WCM tenant |
-| host | undefined | false | Server host. (This needs to be set, when setting up a proxy from http to https). |
+| host | undefined | false | Server host domain (This needs to be set, when setting up a proxy from http to https) |
 | headers | undefined | false | Addtional headers |

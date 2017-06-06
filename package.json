@@ -11,13 +11,20 @@
     "Pelorus",
     "Proxy"
   ],
-  "author": "Jeroen Valcke (District01)",
-  "license": "ISC",
+  "author": "Jeroen Valcke <jeroen.valcke@district01.be>",
+  "contributors": [
+    "Jeroen Valcke <jeroen.valcke@district01.be>"
+  ],
+  "license": "GPL-2.0",
   "dependencies": {
     "http-proxy": "~1.16.2",
     "lodash.clonedeep": "~4.5.0",
     "lodash.get": "~4.4.2",
-    "lodash.merge": "~4.6.0",
-    "rootpath": "~0.1.2"
+    "lodash.merge": "~4.6.0"
+  },
+  "devDependencies": {
+    "@district01/eslint-config": "1.0.0",
+    "eslint": "3.19.0",
+    "eslint-plugin-chai-friendly": "0.3.6"
   }
 }

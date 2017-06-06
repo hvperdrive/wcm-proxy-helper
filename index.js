@@ -1,6 +1,5 @@
-"use strict";
-
-require("rootpath")();
+var path = require("path");
+var url = require("url");
 var cloneDeep = require("lodash.clonedeep");
 var get = require("lodash.get");
 var merge = require("lodash.merge");
@@ -8,45 +7,45 @@ var proxy = require("http-proxy").createProxyServer({});
 
 // Default proxy fallback
 var fallback = function fallback(target) {
-    return function(err, req, res) {
-        return res.status(500).json({
-            err: "Error while proxing to " + target
-        });
-    };
+	return function(err, req, res) {
+		return res.status(500).json({
+			err: "Error while proxing to " + target,
+		});
+	};
 };
 
 // Generate final config based on received config
 var generateConfig = function generateConfig(config) {
 	var prefix = config.prefix || "/proxy";
 
+	prefix = path.resolve("/", prefix);
+
 	return {
-		target: config.target,
+		target: url.resolve(config.target, "/"),
 		changeOrigin: true,
-		headers: merge({},
-			{
-				host: config.host,
-				apikey: config.apikey,
-				tenant: config.tenant
-			},
+		headers: merge({}, {
+			host: url.resolve(config.host, "/"),
+			apikey: config.apikey,
+			tenant: config.tenant,
+		},
 			config.headers
 		),
-		routes: [
-			{
-				target: "",
-				route: prefix
-			},
-			{
-				target: "files/",
-				route: [
-					"/files",
-					"/file",
-					prefix + "/files",
-					prefix + "/file",
-					"/api/1.0.0/files",
-					"/api/1.0.0/file"
-				]
-			}
-		]
+		routes: [{
+			target: "",
+			route: prefix,
+		},
+		{
+			target: "files/",
+			route: [
+				"/files",
+				"/file",
+				prefix + "/files",
+				prefix + "/file",
+				"/api/1.0.0/files",
+				"/api/1.0.0/file",
+			],
+		},
+		],
 	};
 };
 
@@ -56,7 +55,7 @@ var convertParams = function convertParams(app, target, apikey, tenant, host) {
 		target: target,
 		host: host,
 		apikey: apikey,
-		tenant: tenant
+		tenant: tenant,
 	};
 };
 
@@ -65,7 +64,7 @@ var proxyMiddleware = function(config, route) {
 	config.target += get(route, "target", "");
 	delete config.routes;
 
-	return function(req, res, next) {
+	return function(req, res) {
 		return proxy.web(req, res, config, fallback);
 	};
 };
