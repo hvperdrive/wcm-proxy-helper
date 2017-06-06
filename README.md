@@ -41,6 +41,17 @@ module.exports = function(app) {
 | prefix | "/proxy" | false | Route after which should be proxied |
 | headers | undefined | false | Addtional headers |
 
+This will proxy the following routes to the WCM:
+
+- `[prefix]/...`
+- `/files/...`
+- `/file/...`
+- `[prefix]/files/...`
+- `[prefix]/file/...`
+- `/api/1.0.0/files/...`
+- `/api/1.0.0/file/...`
+
+
 ## addProxyRoute
 
 'ProxyHelper.addProxyRoute(app, prefix, options);'

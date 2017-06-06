@@ -20,7 +20,8 @@
     "http-proxy": "~1.16.2",
     "lodash.clonedeep": "~4.5.0",
     "lodash.get": "~4.4.2",
-    "lodash.merge": "~4.6.0"
+    "lodash.merge": "~4.6.0",
+    "url-join": "~2.0.2"
   },
   "devDependencies": {
     "@district01/eslint-config": "1.0.0",

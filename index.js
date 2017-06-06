@@ -1,5 +1,5 @@
 var path = require("path");
-var url = require("url");
+var urlJoin = require("url-join");
 var cloneDeep = require("lodash.clonedeep");
 var get = require("lodash.get");
 var merge = require("lodash.merge");
@@ -21,10 +21,10 @@ var generateConfig = function generateConfig(config) {
 	prefix = path.resolve("/", prefix);
 
 	return {
-		target: url.resolve(config.target, "/"),
+		target: urlJoin(config.target, "/"),
 		changeOrigin: true,
 		headers: merge({}, {
-			host: url.resolve(config.host, "/"),
+			host: urlJoin(config.host, "/"),
 			apikey: config.apikey,
 			tenant: config.tenant,
 		},
