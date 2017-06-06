@@ -15,26 +15,18 @@ var fallback = function fallback(target) {
 };
 
 // Generate final config based on received config
-var generateConfig = function generateConfig(config) {
+var generateConfig = function generateConfig(config, onlyUsePrefix) {
 	var prefix = config.prefix || "/proxy";
 
 	prefix = path.resolve("/", prefix);
 
-	return {
-		target: urlJoin(config.target, "/"),
-		changeOrigin: true,
-		headers: merge({}, {
-			host: urlJoin(config.host, "/"),
-			apikey: config.apikey,
-			tenant: config.tenant,
-		},
-			config.headers
-		),
-		routes: [{
-			target: "",
-			route: prefix,
-		},
-		{
+	var routes = [{
+		target: "",
+		route: prefix,
+	}];
+
+	if (!onlyUsePrefix) {
+		routes.push({
 			target: "files/",
 			route: [
 				"/files",
@@ -44,8 +36,18 @@ var generateConfig = function generateConfig(config) {
 				"/api/1.0.0/files",
 				"/api/1.0.0/file",
 			],
-		},
-		],
+		});
+	}
+
+	return {
+		target: urlJoin(config.target, "/"),
+		changeOrigin: true,
+		headers: merge({}, {
+			host: urlJoin(config.host, "/"),
+			apikey: config.apikey,
+			tenant: config.tenant,
+		}, config.headers),
+		routes: routes,
 	};
 };
 
@@ -85,7 +87,7 @@ var main = function main(app, params) {
 };
 
 main.addProxyRoute = function(app, routes, proxyConfig) {
-	app.use(routes, proxyMiddleware(generateConfig(proxyConfig)));
+	app.use(routes, proxyMiddleware(generateConfig(proxyConfig, true)));
 };
 
 module.exports = main;
