@@ -5,6 +5,13 @@ var get = require("lodash.get");
 var merge = require("lodash.merge");
 var proxy = require("http-proxy").createProxyServer({});
 
+var throwInvalidConfigError = function() {
+	throw {
+		err: "Config not valid!",
+		message: "Please verify if the config passed is valid. Read de docs for more information",
+	};
+};
+
 // Default proxy fallback
 var fallback = function fallback(target) {
 	return function(err, req, res) {
@@ -14,8 +21,16 @@ var fallback = function fallback(target) {
 	};
 };
 
+var checkConfig = function(config) {
+	if (!config.target) {
+		throwInvalidConfigError();
+	}
+};
+
 // Generate final config based on received config
 var generateConfig = function generateConfig(config, onlyUsePrefix) {
+	checkConfig(config);
+
 	var prefix = config.prefix || "/proxy";
 
 	prefix = path.resolve("/", prefix);
@@ -40,10 +55,10 @@ var generateConfig = function generateConfig(config, onlyUsePrefix) {
 	}
 
 	return {
-		target: urlJoin(config.target, "/"),
+		target: urlJoin(config.target || "", "/"),
 		changeOrigin: true,
 		headers: merge({}, {
-			host: urlJoin(config.host, "/"),
+			host: config.host ? urlJoin(config.host, "/") : undefined,
 			apikey: config.apikey,
 			tenant: config.tenant,
 		}, config.headers),
@@ -53,6 +68,10 @@ var generateConfig = function generateConfig(config, onlyUsePrefix) {
 
 // Convert function params to generalized config
 var convertParams = function convertParams(app, target, apikey, tenant, host) {
+	if (!target || !apikey || !tenant) {
+		throwInvalidConfigError();
+	}
+
 	return {
 		target: target,
 		host: host,
@@ -76,7 +95,8 @@ var main = function main(app, params) {
 	// Get function arguments
 	var args = [].slice.call(arguments);
 	// Convert params to params object if there are more then 2
-	var c = args.length > 2 ? convertParams.apply(args[0], args) : params;
+	var c = args.length > 2 || typeof args[1] === "string" ? convertParams.apply(args[0], args) : params;
+
 	// Generate final config
 	var config = generateConfig(c);
 
@@ -87,6 +107,10 @@ var main = function main(app, params) {
 };
 
 main.addProxyRoute = function(app, routes, proxyConfig) {
+	if (!app || !routes || !proxyConfig) {
+		throwInvalidConfigError();
+	}
+
 	app.use(routes, proxyMiddleware(generateConfig(proxyConfig, true)));
 };
 
