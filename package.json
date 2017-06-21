@@ -1,0 +1,37 @@
+{
+  "name": "wcm-proxy-helper",
+  "version": "0.0.1",
+  "description": "Proxy helper for WCM node server",
+  "main": "index.js",
+  "scripts": {
+    "test": "NODE_ENV=test ./node_modules/.bin/istanbul cover --dir ./coverage ./node_modules/.bin/_mocha -- -R spec -t 15000 --recursive"
+  },
+  "keywords": [
+    "WCM",
+    "Pelorus",
+    "Proxy"
+  ],
+  "author": "Jeroen Valcke <jeroen.valcke@district01.be>",
+  "contributors": [
+    "Jeroen Valcke <jeroen.valcke@district01.be>"
+  ],
+  "license": "GPL-2.0",
+  "dependencies": {
+    "http-proxy": "~1.16.2",
+    "lodash.clonedeep": "~4.5.0",
+    "lodash.get": "~4.4.2",
+    "lodash.merge": "~4.6.0",
+    "rootpath": "~0.1.2",
+    "url-join": "~2.0.2"
+  },
+  "devDependencies": {
+    "@district01/eslint-config": "1.0.0",
+    "chai": "~4.0.2",
+    "eslint": "3.19.0",
+    "eslint-plugin-chai-friendly": "0.3.6",
+    "istanbul": "~0.4.5",
+    "lodash": "~4.17.4",
+    "mocha": "~3.4.2",
+    "rewire": "~2.5.2"
+  }
+}
