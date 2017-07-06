@@ -34,11 +34,7 @@ var transformer = function transformer(globPattern, modifier, data, req, res) {
 };
 
 module.exports = function(globPattern, modifier) {
-	return function responseMiddleware(req, res, next) {
-		(
-			proxyResponseTransformer(function(data, req, res) {
-				return transformer(globPattern, modifier, data, req, res);
-			})
-		)(req, res, next);
-	};
+	return proxyResponseTransformer(function(data, req, res) {
+		return transformer(globPattern, modifier, data, req, res);
+	});
 };
