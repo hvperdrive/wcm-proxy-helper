@@ -54,6 +54,12 @@ var generateConfig = function generateConfig(config, onlyUsePrefix) {
 		});
 	}
 
+	// Allow dynamic config headers based on request an response context
+	if (typeof config.headers === "function") {
+		config.headerFn = config.headers;
+		config.headers = {};
+	}
+
 	return {
 		target: urlJoin(config.target || "", "/"),
 		changeOrigin: true,
@@ -82,11 +88,23 @@ var convertParams = function convertParams(app, target, apikey, tenant, host) {
 
 // Proxy functionality
 var proxyMiddleware = function(config, route) {
+	var headerFn = config.headerFn;
+	var proxyConf;
+
 	config.target += get(route, "target", "");
+
 	delete config.routes;
+	delete config.headerFn;
 
 	return function(req, res) {
-		return proxy.web(req, res, config, fallback);
+		// Exec header function if there is one
+		if (headerFn) {
+			proxyConf = merge({}, config, { headers: headerFn(req, res) });
+		} else {
+			proxyConf = config;
+		}
+
+		return proxy.web(req, res, proxyConf, fallback);
 	};
 };
 

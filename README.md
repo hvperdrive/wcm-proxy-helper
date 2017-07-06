@@ -35,14 +35,14 @@ module.exports = function(app) {
 
 ### Options
 
-| Option | Default | Required | Description |
-|--------|---------|----------|-------------|
-| target | undefined | true | Target to proxy to |
-| apikey | undefined | false | WCM apikey |
-| tenant | undefined | false | WCM tenant |
-| host | undefined | false | Server host domain (This needs to be set, when setting up a proxy from http to https) |
-| prefix | "/proxy" | false | Route after which should be proxied |
-| headers | undefined | false | Addtional headers |
+| Option | Default | Required | Type | Description |
+|--------|---------|----------|------|-------------|
+| target | undefined | true | string | Target to proxy to |
+| apikey | undefined | false | string | WCM apikey |
+| tenant | undefined | false | string | WCM tenant |
+| host | undefined | false | string | Server host domain (This needs to be set, when setting up a proxy from http to https) |
+| prefix | "/proxy" | false | string | Route after which should be proxied |
+| headers | undefined | false | object \| function |Addtional headers |
 
 This will proxy the following routes to the WCM:
 
