@@ -61,6 +61,7 @@ var generateConfig = function generateConfig(config, onlyUsePrefix) {
 	}
 
 	return {
+		headerFn: config.headerFn,
 		target: urlJoin(config.target || "", "/"),
 		changeOrigin: true,
 		headers: merge({}, {
