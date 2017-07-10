@@ -30,8 +30,8 @@ var transformer = function transformer(regex, modifier, data, req, res) {
 			newData = JSON.stringify(modifier(JSON.parse(data), req, res));
 		},
 		function errorFn(exeption) {
-			console.error("Failed to execute modifier. Original data returned...");
-			console.error("error: ", exeption);
+			console.error("Failed to execute modifier. Original data returned..."); // eslint-disable-line no-console
+			console.error("error: ", exeption); // eslint-disable-line no-console
 		}
 	);
 

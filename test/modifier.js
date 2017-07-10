@@ -12,18 +12,6 @@ chai.use(sinonChai);
 var proxyModifier = rewire("src/modifier");
 
 describe("WCMProxyHelper -- UNIT -- Modifier |", function() {
-	// var requestMock = {
-	// 	url: "",
-	// };
-	// var responseMock = {
-	// 	status: function() {
-	// 		return {
-	// 			json: function(data) {
-	// 				return data;
-	// 			},
-	// 		};
-	// 	},
-	// };
 
 	describe("tryCatchOptimizer |", function() {
 		var tcOptimizer = proxyModifier.__get__("tryCatchOptimizer");
