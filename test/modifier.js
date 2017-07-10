@@ -91,7 +91,7 @@ describe("WCMProxyHelper -- UNIT -- Modifier |", function() {
 
 		it("Should return original data when not matched", function() {
 			var result = transformer(
-				"\/nomatch*.",
+				"\/nomatch.*",
 				stringModifierFn,
 				JSON.stringify(mockData),
 				requestMockCreator("/some-url/url"),
@@ -107,7 +107,7 @@ describe("WCMProxyHelper -- UNIT -- Modifier |", function() {
 			var request = requestMockCreator("/match/url?hello=somehello");
 			var response = responseMockCreator("Some other content-type");
 			var result = transformer(
-				"\/match*.",
+				"\/match.*",
 				stringModifierFn,
 				JSON.stringify(mockData),
 				request,
@@ -123,7 +123,7 @@ describe("WCMProxyHelper -- UNIT -- Modifier |", function() {
 			var request = requestMockCreator("/match/url?hello=somehello");
 			var response = responseMockCreator("application/json; utf-8");
 			var result = transformer(
-				"\/match*.",
+				"\/match.*",
 				jsonModifierFn,
 				JSON.stringify(mockData),
 				request,
@@ -141,7 +141,7 @@ describe("WCMProxyHelper -- UNIT -- Modifier |", function() {
 			var request = requestMockCreator("/match/url?hello=somehello");
 			var response = responseMockCreator("application/json; utf-8");
 			var result = transformer(
-				"\/match*.",
+				"\/match.*",
 				errorModifierFn,
 				JSON.stringify(mockData),
 				request,
@@ -172,13 +172,13 @@ describe("WCMProxyHelper -- UNIT -- Modifier |", function() {
 			var modifier = function(data) {
 				return data;
 			};
-			var resultFn = proxyModifier("/main*.", modifier);
+			var resultFn = proxyModifier("/main.*", modifier);
 			var middlewareResult = resultFn({ test: "test" }, { req: true, url: "" }, { res:true });
 
 			expect(resultFn).to.be.an("function");
 			expect(middlewareResult).to.be.an("object");
 			expect(middlewareResult.test).to.eq("test");
-			transformerSpy.should.have.been.calledWith(new RegExp("/main*.", "gi"), modifier);
+			transformerSpy.should.have.been.calledWith(new RegExp("/main.*", "gi"), modifier);
 		});
 
 		after(function() {
