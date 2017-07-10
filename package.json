@@ -21,7 +21,9 @@
     "lodash.clonedeep": "~4.5.0",
     "lodash.get": "~4.4.2",
     "lodash.merge": "~4.6.0",
+    "minimatch": "~3.0.4",
     "rootpath": "~0.1.2",
+    "transformer-proxy": "~0.3.4",
     "url-join": "~2.0.2"
   },
   "devDependencies": {
@@ -32,6 +34,8 @@
     "istanbul": "~0.4.5",
     "lodash": "~4.17.4",
     "mocha": "~3.4.2",
-    "rewire": "~2.5.2"
+    "rewire": "~2.5.2",
+    "sinon": "~2.3.6",
+    "sinon-chai": "~2.11.0"
   }
 }

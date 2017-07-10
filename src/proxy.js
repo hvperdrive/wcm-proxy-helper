@@ -88,7 +88,7 @@ var convertParams = function convertParams(app, target, apikey, tenant, host) {
 };
 
 // Proxy functionality
-var proxyMiddleware = function(config, route) {
+var proxyMiddleware = function proxyMiddleware(config, route) {
 	var headerFn = config.headerFn;
 	var proxyConf;
 
@@ -109,7 +109,7 @@ var proxyMiddleware = function(config, route) {
 	};
 };
 
-module.exports.createWCMProxyRoutes = function(app, params) {
+module.exports.createWCMProxyRoutes = function createWCMProxyRoutes(app, params) {
 	// Get function arguments
 	var args = [].slice.call(arguments);
 	// Convert params to params object if there are more then 2
@@ -124,7 +124,7 @@ module.exports.createWCMProxyRoutes = function(app, params) {
 	}
 };
 
-module.exports.addProxyRoute = function(app, routes, proxyConfig) {
+module.exports.addProxyRoute = function addProxyRoute(app, routes, proxyConfig) {
 	if (!app || !routes || !proxyConfig) {
 		throwInvalidConfigError();
 	}

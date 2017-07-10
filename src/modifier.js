@@ -1,7 +1,6 @@
 var proxyResponseTransformer = require("transformer-proxy");
-var minimatch = require("minimatch");
 
-var tryCatchOptimizer = function(fn, errorFn, finallyFn) {
+var tryCatchOptimizer = function tryCatchOptimizer(fn, errorFn, finallyFn) {
 	try {
 		fn();
 	} catch (exception) {
@@ -15,26 +14,32 @@ var tryCatchOptimizer = function(fn, errorFn, finallyFn) {
 	}
 };
 
-var transformer = function transformer(globPattern, modifier, data, req, res) {
-	if (!minimatch(req.url, globPattern)) {
+var transformer = function transformer(regex, modifier, data, req, res) {
+	if (!req.url.match(regex)) {
 		return data;
 	}
 
 	if (res.get("Content-Type").indexOf("application/json") === -1) {
-		return modifier(data);
+		return modifier(data, req, res);
 	}
 
 	var newData = null;
 
-	tryCatchOptimizer(function fn() {
-		newData = JSON.stringify(modifier(JSON.parse(data), req, res));
-	});
+	tryCatchOptimizer(
+		function fn() {
+			newData = JSON.stringify(modifier(JSON.parse(data), req, res));
+		},
+		function errorFn(exeption) {
+			console.error("Failed to execute modifier. Original data returned...");
+			console.error("error: ", exeption);
+		}
+	);
 
 	return newData || data;
 };
 
-module.exports = function(globPattern, modifier) {
+module.exports = function(pattern, modifier) {
 	return proxyResponseTransformer(function(data, req, res) {
-		return transformer(globPattern, modifier, data, req, res);
+		return transformer(new RegExp(pattern, "gi"), modifier, data, req, res);
 	});
 };

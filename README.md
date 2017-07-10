@@ -8,8 +8,8 @@ It is specialized to handle WCM proxy with minimal effort, but it can also be us
 var ProxyHelper = require("wcm-proxy-helper");
 
 module.exports = function(app) {
-    app.use("/proxy", ProxyHelper.responseModifier("/content*", contentModifier));
-    app.use("/proxy", ProxyHelper.responseModifier("/views*", viewsModifier));
+    app.use("/proxy", ProxyHelper.responseModifier("/content*.", contentModifier));
+    app.use("/proxy", ProxyHelper.responseModifier("/views*.", viewsModifier));
 
     // Setup proxy for WCM
     ProxyHelper(app, {
@@ -69,11 +69,11 @@ This will proxy the following routes to the WCM:
 
 ## responseModifier
 
-`ProxyHelper.responseModifier(globPattern, modifierFn);`
+`ProxyHelper.responseModifier(regexPattern, modifierFn);`
 
-### globPattern
+### Regex pattern
 
-The modifier function will only be called if the pattern matched with the request url using [minimatch](https://github.com/isaacs/minimatch).
+The modifier function will only be called if the pattern matched with the request url using regex
 
 The value of the request url will the path after the proxy prefix. <br>
 This means that the request `http://someServerurl.com/proxy/content?slug=home&lang=nl` will generate the following request url `/content?slug=home&lang=nl`.
