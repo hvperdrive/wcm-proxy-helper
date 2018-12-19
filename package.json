@@ -4,7 +4,8 @@
   "description": "Proxy helper for WCM node server",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test ./node_modules/.bin/istanbul cover --dir ./coverage ./node_modules/.bin/_mocha -- -R spec -t 15000 --recursive"
+    "test": "NODE_ENV=test ./node_modules/.bin/istanbul cover --dir ./coverage ./node_modules/.bin/_mocha -- -R spec -t 15000 --recursive",
+    "eslint":"eslint ./**/*"
   },
   "keywords": [
     "WCM",
@@ -21,17 +22,21 @@
     "lodash.clonedeep": "~4.5.0",
     "lodash.get": "~4.4.2",
     "lodash.merge": "~4.6.0",
+    "minimatch": "~3.0.4",
     "rootpath": "~0.1.2",
+    "transformer-proxy": "~0.3.4",
     "url-join": "~2.0.2"
   },
   "devDependencies": {
     "@district01/eslint-config": "1.0.0",
     "chai": "~4.0.2",
     "eslint": "3.19.0",
-    "eslint-plugin-chai-friendly": "0.3.6",
+    "eslint-plugin-chai-friendly": "~0.3.6",
     "istanbul": "~0.4.5",
     "lodash": "~4.17.4",
     "mocha": "~3.4.2",
-    "rewire": "~2.5.2"
+    "rewire": "~2.5.2",
+    "sinon": "~2.3.6",
+    "sinon-chai": "~2.11.0"
   }
 }
