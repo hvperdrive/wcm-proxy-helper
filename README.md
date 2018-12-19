@@ -8,6 +8,9 @@ It is specialized to handle WCM proxy with minimal effort, but it can also be us
 var ProxyHelper = require("wcm-proxy-helper");
 
 module.exports = function(app) {
+    app.use("/proxy", ProxyHelper.responseModifier("/content*.", contentModifier));
+    app.use("/proxy", ProxyHelper.responseModifier("/views*.", viewsModifier));
+
     // Setup proxy for WCM
     ProxyHelper(app, {
         target: "https://target...",
@@ -32,14 +35,14 @@ module.exports = function(app) {
 
 ### Options
 
-| Option | Default | Required | Description |
-|--------|---------|----------|-------------|
-| target | undefined | true | Target to proxy to |
-| apikey | undefined | false | WCM apikey |
-| tenant | undefined | false | WCM tenant |
-| host | undefined | false | Server host domain (This needs to be set, when setting up a proxy from http to https) |
-| prefix | "/proxy" | false | Route after which should be proxied |
-| headers | undefined | false | Addtional headers |
+| Option | Default | Required | Type | Description |
+|--------|---------|----------|------|-------------|
+| target | undefined | true | string | Target to proxy to |
+| apikey | undefined | false | string | WCM apikey |
+| tenant | undefined | false | string | WCM tenant |
+| host | undefined | false | string | Server host domain (This needs to be set, when setting up a proxy from http to https) |
+| prefix | "/proxy" | false | string | Route after which should be proxied |
+| headers | undefined | false | object \| function |Addtional headers |
 
 This will proxy the following routes to the WCM:
 
@@ -54,7 +57,7 @@ This will proxy the following routes to the WCM:
 
 ## addProxyRoute
 
-'ProxyHelper.addProxyRoute(app, prefix, options);'
+`ProxyHelper.addProxyRoute(app, prefix, options);`
 
 ### Options
 
@@ -63,3 +66,30 @@ This will proxy the following routes to the WCM:
 | tenant | undefined | false | WCM tenant |
 | host | undefined | false | Server host domain (This needs to be set, when setting up a proxy from http to https) |
 | headers | undefined | false | Addtional headers |
+
+## responseModifier
+
+`ProxyHelper.responseModifier(regexPattern, modifierFn);`
+
+### Regex pattern
+
+The modifier function will only be called if the pattern matched with the request url using regex
+
+The value of the request url will the path after the proxy prefix. <br>
+This means that the request `http://someServerurl.com/proxy/content?slug=home&lang=nl` will generate the following request url `/content?slug=home&lang=nl`.
+
+### modifierFn
+
+This is a callback function that is called after de proxy has received a response but before it has sent the response to the client. This means that the response can be modified before it goes to the client. <br>
+Only synchronous functionality and request that have the content-type `application/json` are supported for now.
+
+#### Params
+
+| Param  | Description |
+|--------|-------------|
+| data | Response object |
+| req | Express request object |
+| res  | Express response object |
+
+#### Response
+The ProxyHelper expects a JSON object as a return value. The original response object will be used if no valid result is returned.

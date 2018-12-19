@@ -16,6 +16,6 @@ module.exports = {
 		// Disable no-unused-expressions
 		"no-unused-expressions": 0,
 		// Enable no-unused-expressions but skip items for chai
-		"chai-friendly/no-unused-expressions": 2
+		"chai-friendly/no-unused-expressions": 0
 	},
 };
