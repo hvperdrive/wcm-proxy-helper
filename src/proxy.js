@@ -33,7 +33,7 @@ var generateConfig = function generateConfig(config, onlyUsePrefix) {
 
 	var prefix = config.prefix || "/proxy";
 
-	prefix = path.resolve("/", prefix);
+	prefix = path.posix.resolve("/", prefix);
 
 	var routes = [{
 		target: "",
