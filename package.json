@@ -1,6 +1,6 @@
 {
   "name": "@wcm/proxy-helper",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Proxy helper for WCM node server",
   "main": "index.js",
   "scripts": {
