@@ -3,9 +3,9 @@ var _ = require("lodash");
 var rewire = require("rewire");
 var expect = require("chai").expect;
 
-var proxyHelper = rewire("index");
+var proxyHelper = rewire("src/proxy");
 
-describe("WCMProxyHelper -- UNIT |", function() {
+describe("WCMProxyHelper -- UNIT -- Proxy |", function() {
 	var target = "https://sometarget.com";
 	var host = "https://host.com";
 	var apikey = "someApikey";
@@ -192,8 +192,8 @@ describe("WCMProxyHelper -- UNIT |", function() {
 
 	});
 
-	describe("Main |", function() {
-		var main = proxyHelper.__get__("main");
+	describe("createWCMProxyRoutes |", function() {
+		var main = proxyHelper.createWCMProxyRoutes;
 		var appMock = {
 			arr: [],
 		};
@@ -266,7 +266,7 @@ describe("WCMProxyHelper -- UNIT |", function() {
 	});
 
 	describe("Add proxy route", function() {
-		var main = proxyHelper.__get__("main");
+		var main = proxyHelper;
 		var appMock = {
 			arr: [],
 		};
