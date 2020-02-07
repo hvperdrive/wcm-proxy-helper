@@ -33,7 +33,7 @@
   "devDependencies": {
     "@district01/eslint-config": "1.0.0",
     "chai": "~4.0.2",
-    "eslint": "3.19.0",
+    "eslint": "4.18.2",
     "eslint-plugin-chai-friendly": "~0.3.6",
     "istanbul": "~0.4.5",
     "lodash": "~4.17.4",
