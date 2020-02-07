@@ -1,11 +1,14 @@
 {
-  "name": "wcm-proxy-helper",
-  "version": "0.0.1",
+  "name": "@wcm/proxy-helper",
+  "version": "1.1.0",
   "description": "Proxy helper for WCM node server",
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test ./node_modules/.bin/istanbul cover --dir ./coverage ./node_modules/.bin/_mocha -- -R spec -t 15000 --recursive",
-    "eslint":"eslint ./**/*"
+    "eslint": "eslint ./**/*"
+  },
+  "publishConfig": {
+    "@wcm:registry": "https://nexusrepo.antwerpen.be/repository/npm-private/"
   },
   "keywords": [
     "WCM",
