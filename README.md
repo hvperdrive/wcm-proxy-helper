@@ -5,7 +5,7 @@ It is specialized to handle WCM proxy with minimal effort, but it can also be us
 ## Usage
 
 ```javascript
-var ProxyHelper = require("wcm-proxy-helper");
+var ProxyHelper = require("@wcm/proxy-helper");
 
 module.exports = function(app) {
     app.use("/proxy", ProxyHelper.responseModifier("/content*.", contentModifier));
